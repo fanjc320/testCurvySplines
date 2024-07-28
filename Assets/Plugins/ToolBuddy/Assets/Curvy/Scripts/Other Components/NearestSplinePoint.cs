@@ -9,6 +9,7 @@ using FluffyUnderware.DevTools;
 using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace FluffyUnderware.Curvy
 {
@@ -51,6 +52,7 @@ namespace FluffyUnderware.Curvy
         /// </summary>
         [Tooltip("At each update, this event is called with the result of the lookup")]
         public UnityEventEx<Vector3> OnUpdated = new UnityEventEx<Vector3>();
+        public UnityEvent<Vector3, Vector3> OnUpdatedFjc = new UnityEvent<Vector3, Vector3>();
 
         private void Process()
         {
@@ -62,7 +64,8 @@ namespace FluffyUnderware.Curvy
                 );
                 if (TargetPosition)
                     TargetPosition.position = destinationPosition;
-                //OnUpdated?.Invoke(destinationPosition);
+                OnUpdated?.Invoke(destinationPosition);
+                OnUpdatedFjc?.Invoke(SourcePosition.position, destinationPosition);
                 //float tf = Spline.GetNearestPointTF(
                 //    SourcePosition.position,
                 //    Space.World
