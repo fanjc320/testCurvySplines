@@ -23,6 +23,7 @@ public class FjcCreateSplineProcedual : MonoBehaviour
     public Component CreateLine(Vector3 startPt, Vector3 endPt)
     {
         CurvySpline spl = CurvySpline.Create();
+        spl.transform.parent = transform;
         spl.name = "fjcLine";
         spl.GizmoColor = Color.green;
         spl.transform.position = Vector3.zero;

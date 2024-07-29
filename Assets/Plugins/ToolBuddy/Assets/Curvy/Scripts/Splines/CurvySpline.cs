@@ -2617,6 +2617,37 @@ namespace FluffyUnderware.Curvy
             return resSeg.LocalFToTF(resF);
         }
 
+        //fjc
+        public int GetPointByTF(float tf, out Vector3 point,
+            [CanBeNull] out CurvySplineSegment segment, Space space = Space.Self)
+        {
+            sanityChecker.Check();
+
+            point = Vector3.zero;
+            if (Count == 0)
+            {
+                segment = null;
+                return -1;
+            }
+
+            float lf = 0;
+            CurvySplineSegment seg = TFToSegment(tf, out lf);
+            if (seg == null)
+            {
+                Debug.Log("GetPointByTF seg is null!!!!!");
+                segment = null;
+                return -2;
+            }
+            segment = seg;
+            Vector3 v = seg.Interpolate(
+                    lf,
+                    space
+                );
+            point = v;
+            // return the nearest
+            return 0;
+        }
+
         /// <summary>
         /// Refreshs the spline
         /// </summary>
