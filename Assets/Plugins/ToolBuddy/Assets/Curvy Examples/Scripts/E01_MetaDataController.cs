@@ -59,7 +59,7 @@ namespace FluffyUnderware.Curvy.Examples
                 Spline.Refresh();
 
             // Get the interpolated Metadata value for the current position (for SplineController, RelativePosition means TF)
-            float height = Spline.GetInterpolatedMetadata<E01_HeightMetadata, float>(RelativePosition);
+            float height = Spline.GetInterpolatedMetadata<E01_HeightMetadata, float>(RelativePosition);//???????????
 
             // In our case we store a percentage (0..1) in our custom MetaData class, so we multiply with MaxHeight to set the actual height.
             // Note that position and rotation  has been set by the SplineController previously, so we just translate here using the local y-axis

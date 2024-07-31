@@ -1,5 +1,5 @@
 // =====================================================================
-// Copyright © 2020 ToolBuddy
+// Copyright ?2020 ToolBuddy
 // All rights reserved
 // 
 // http://www.toolbuddy.net
