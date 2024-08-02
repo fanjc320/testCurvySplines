@@ -140,8 +140,8 @@ Material:
     - _sqrDicStand1: 0
     - _sqrDicStand2: 0
     m_Colors:
-    - _Color: {r: 1, g: 0, b: 0, a: 1}
+    - _Color: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _LastUV: {r: 0.29900005, g: 0.66791666, b: 0, a: 0}
-    - _UV: {r: 0.29900005, g: 0.66791666, b: 0, a: 0}
+    - _LastUV: {r: Infinity, g: Infinity, b: 0, a: 0}
+    - _UV: {r: Infinity, g: Infinity, b: 0, a: 0}
   m_BuildTextureStacks: []

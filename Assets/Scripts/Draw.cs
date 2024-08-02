@@ -39,6 +39,8 @@ namespace Framework.CharacterWriter
 
             brushMat.SetColor("_Color", Color.black);
             brushMat.SetFloat("_Size", 100);
+
+            Debug.Log("Draw rawImageSizeX:" + m_rawImageSizeX + " rawImageSizeY:" + m_rawImageSizeY);
         }
 
         public void Release()
@@ -85,11 +87,13 @@ namespace Framework.CharacterWriter
             var uv = GetUV(m_mousePos);
             var last = GetUV(m_lastMousePos);
 
-            brushMat.SetTexture("_Tex", m_renderTex);
+            //brushMat.SetTexture("_Tex", m_renderTex);
+            brushMat.SetTexture("_Tex", m_lastRenderTex);
             brushMat.SetVector("_UV", uv);
             brushMat.SetVector("_LastUV", last);
 
-            Graphics.Blit(m_renderTex, m_renderTex, brushMat);
+            //Graphics.Blit(m_renderTex, m_renderTex, brushMat);
+            Graphics.Blit(m_lastRenderTex, m_renderTex, brushMat);
         }
 
         Vector2 GetUV(Vector2 brushPos)

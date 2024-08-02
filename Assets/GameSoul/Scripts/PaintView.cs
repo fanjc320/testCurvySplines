@@ -34,6 +34,7 @@ public class PaintView : MonoBehaviour
     private Texture _defaultBrushTex;
     //renderTexture
     private RenderTexture _renderTex;
+    private RenderTexture _canvasTex;
     //默认笔刷RawImage
     [SerializeField]
     private Image _defaultColorImage;
@@ -46,7 +47,7 @@ public class PaintView : MonoBehaviour
     //笔刷大小的slider
     private Text _brushSizeText;
     //笔刷的大小
-    private float _brushSize;
+    private float _brushSize = 100;
     //屏幕的宽高
     private int _screenWidth;
     private int _screenHeight;
@@ -75,6 +76,7 @@ public class PaintView : MonoBehaviour
     {
        _brushSize = size;
        _paintBrushMat.SetFloat("_Size", _brushSize);
+        Debug.Log("setBrushSize:" + size);
     }
 
     public void SetBrushTexture(Texture texture)
@@ -113,7 +115,8 @@ public class PaintView : MonoBehaviour
     public void BrushSizeChanged(Slider slider)
     {
       //  float value = slider.maxValue + slider.minValue - slider.value;
-        SetBrushSize(Remap(slider.value,300.0f,30.0f));
+        //SetBrushSize(Remap(slider.value,300.0f,30.0f));
+        SetBrushSize(slider.value);
         if (_brushSizeText == null)
         {
             _brushSizeText=slider.transform.Find("Background/Text").GetComponent<Text>();
@@ -151,9 +154,12 @@ public class PaintView : MonoBehaviour
     //初始化数据
     void InitData()
     {
-        //_brushSize = 300.0f;
-        _brushLerpSize = (_defaultBrushTex.width + _defaultBrushTex.height) / 2.0f / _brushSize;
+        //_brushSize = 100.0f;
+        //_brushLerpSize = (_defaultBrushTex.width + _defaultBrushTex.height) / 2.0f / _brushSize;
+        _brushLerpSize = (_defaultBrushTex.width + _defaultBrushTex.height) / 2.0f / 100 * _brushSize;
         _lastPoint = Vector2.zero;
+
+        Debug.Log("PaintView InitData brushWid:" + _defaultBrushTex.width + " brushHei:" + _defaultBrushTex.height + " brushSize:" + _brushSize + " brushLerpSize:" + _brushLerpSize);
 
         if (_paintBrushMat == null)
         {
@@ -167,9 +173,13 @@ public class PaintView : MonoBehaviour
             _screenHeight = Screen.height;
 
             _renderTex = RenderTexture.GetTemporary(_screenWidth, _screenHeight, 24);
-            _paintCanvas.texture = _renderTex;
+            //_paintCanvas.texture = _renderTex;
+            _canvasTex = RenderTexture.GetTemporary(_screenWidth, _screenHeight, 24);
+            _paintCanvas.texture = _canvasTex;
         }
         Graphics.Blit(null, _renderTex, _clearBrushMat);
+
+        Debug.Log("PaintView InitData brushLerpSize:" + _brushLerpSize + " wid:" + _screenWidth + " hei:" + _screenHeight);
     }
 
     //更新笔刷材质
@@ -203,6 +213,7 @@ public class PaintView : MonoBehaviour
                 Paint(newPoint);
             }
         }
+        Debug.Log("PaintView LerpPaint brushLerpSize:" + _brushLerpSize + " dis:" + dis + " point:" + point + " _lastPoint:" + _lastPoint);
         _lastPoint = point;
     }
 
@@ -215,7 +226,13 @@ public class PaintView : MonoBehaviour
         Vector2 uv = new Vector2(point.x / (float)_screenWidth,
             point.y / (float)_screenHeight);
         _paintBrushMat.SetVector("_UV", uv);
-        Graphics.Blit(_renderTex, _renderTex, _paintBrushMat);
+        float brushWid = _brushSize / _screenWidth;
+        float brushHei = _brushSize / _screenHeight;
+        _paintBrushMat.SetFloat("_BrushUVWidth", brushWid);
+        _paintBrushMat.SetFloat("_BrushUVHeight", brushHei);
+        //Graphics.Blit(_renderTex, _renderTex, _paintBrushMat);
+        Graphics.Blit(_renderTex, _canvasTex, _paintBrushMat);
+        Debug.Log("Paint BrushWid:" + brushWid + " brushHei:" + brushHei);
     }
     /// <summary>
     /// 重映射  默认  value 为1-100
