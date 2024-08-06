@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Heightmaps Pack\READ ME.txt" />
+    <None Include="Assets\GameSoul\Shader\PaintBrushTest.shader" />
     <None Include="Assets\GameSoul\Shader\ClearBrush.shader" />
     <None Include="Assets\Resource\DrawWord.shader" />
     <None Include="Assets\Resource\Clear.shader" />
