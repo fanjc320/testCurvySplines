@@ -54,7 +54,7 @@
 			{
 				fixed4 col = tex2D(_Tex, i.uv);		
 
-				float a  = _UV.x;
+				float a  = _UV.x; 
 				float b  = _UV.y;
 				float c  = _LastUV.x;
 				float d  = _LastUV.y;
