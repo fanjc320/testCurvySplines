@@ -51,16 +51,62 @@ Shader"Unlit/PaintBrush"
 				return o;
 			}
 
+			//可做到只显示一次笔刷的效果
+			//fixed4 frag(v2f i) : SV_Target
+			//{
+			//    float2 uv = float2(0, 0);
+			//    uv = mul(_Matrix, float4(i.uv, 0, 1)).xy;
+			//	float4 col = tex2D(_BrushTex, uv);
+			//	col *= _Color;
+			//    if (uv.x < 0.0f || uv.x > 1.0f || uv.y < 0.0f || uv.y > 1.0f)
+			//	{
+			//		col = float4(1, 1, 1, 1);
+			//	}
+							
+			//	//col.rgb = 1;
+			//    return col;
+			//}
 
-            fixed4 frag(v2f i) : SV_Target
-            {
-                float2 uv = float2(0, 0);
-				uv = mul(_Matrix, float4(i.uv, 0, 1)).xy;
-				fixed4 col = tex2D(_BrushTex, uv);
-				col.rgb = 1;
-				col *= _Color;
-                return col;
-            }
+//也是做到只显示一次笔刷的效果，笔刷显示为白色
+//fixed4 frag(v2f i) : SV_Target
+//{
+//    float2 uv = float2(0, 0);
+//    uv = mul(_Matrix, float4(i.uv, 0, 1)).xy;
+//    fixed4 col = _Color;
+//    if (uv.x > 0.0f && uv.x < 1.0f && uv.y > 0.0f && uv.y < 1.0f)
+//        col = tex2D(_BrushTex, uv); 
+				
+//    col.rgb = 1;
+//    col *= _Color;
+//    return col;
+//}
+
+
+//这个函数，如果brush边界的像素不是透明的，效果是在整个屏幕上tile
+//fixed4 frag(v2f i) : SV_Target
+//{
+//    float2 uv = float2(0, 0);
+//    uv = mul(_Matrix, float4(i.uv, 0, 1)).xy;
+//    fixed4 col = tex2D(_BrushTex, uv);
+//    col.rgb = 1;
+//    col *= _Color;
+//    return col;
+//}
+
+fixed4 frag(v2f i) : SV_Target
+{
+    float2 uv = float2(0, 0);
+    uv = mul(_Matrix, float4(i.uv, 0, 1)).xy;
+    fixed4 col = _Color;
+    if (uv.x > 0.0f && uv.x < 1.0f && uv.y > 0.0f && uv.y < 1.0f)
+        //col = tex2D(_BrushTex, uv);
+        return tex2D(_BrushTex, uv);
+	else 
+        //return tex2D(_BrushTex, uv);
+        return fixed4(0,0,0,0);//这个解决了边缘不是透明的brush会覆盖全屏的问题
+    //return col;
+}
+
 
 			ENDCG
 		}

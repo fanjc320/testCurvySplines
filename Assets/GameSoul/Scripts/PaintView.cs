@@ -254,7 +254,8 @@ public class PaintView : MonoBehaviour
             for (int i = 0; i < num; i++)
             {
                 Vector2 newPoint = _lastPoint + dir * (i + 1) * _brushLerpSize;
-                Paint(newPoint);
+                //Paint(newPoint);
+                Graphics.Blit(_renderTex, _canvasTex, _paintBrushMat);
                 _lastPoint = point;
             }
         }
@@ -268,6 +269,7 @@ public class PaintView : MonoBehaviour
             return;
 
         Graphics.Blit(_renderTex, _canvasTex, _paintBrushMat);
+        //Graphics.Blit(_canvasTex, _canvasTex, _paintBrushMat);
     }
 
     }
